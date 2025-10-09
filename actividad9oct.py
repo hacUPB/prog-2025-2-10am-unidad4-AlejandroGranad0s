@@ -3,7 +3,7 @@ aeronaves = {
     "Airbus A320": {"peso": 78000, "superficie_alar": 122.6, "velocidad_crucero": 828},
     "Cessna 172": {"peso": 1157, "superficie_alar": 16.2, "velocidad_crucero": 226}
 }
-
+resultados = []
 co = True
 while co == True:
     print("Abriendo el menu del programa")
@@ -15,7 +15,7 @@ while co == True:
             contr = True
             while contr == True:
                 print("ingrese la seccion que desea ver")
-                print(" 1. Qué es \n 2. Simulacion \n 3. Aeronaves \n 0. Regresar \n")
+                print(" 1. Qué es \n 2. Simulacion \n 3. Aeronaves\n 4. Listas\n 0. Regresar \n")
                 opcio = input("Elija una opcion ")
                 match opcio:
                     case "1":
@@ -25,7 +25,7 @@ while co == True:
                         print("Simulacion stall")
                         print("El programa simulará el vuelo de una aeronave en el cual verificará en cada instante si la aeronave se encuentra en condiciones seguras o si está entrando en perdida.")
                         print("Seleccione una aeronave para la simulación:")
-                        for idx, nombre in enumerate(aeronaves.keys()):                     #Uso de la IA para seleccionar una aeronave  Lineas 20 - 30
+                        for idx, nombre in enumerate(aeronaves.keys()):                     #Uso de la IA para seleccionar una aeronave
                             print(f"{idx+1}. {nombre}")
                         seleccion = input("Ingrese el número de la aeronave: ")
                         try:
@@ -36,7 +36,6 @@ while co == True:
                         except (ValueError, IndexError):
                             print("Selección inválida. Usando datos manuales.")
                             datos_aeronave = None
-
                         resultados = []
                         conta = 0
                         while conta < 10:
@@ -67,20 +66,28 @@ while co == True:
                                 print("Precaucion, velocidad de perdida, aumentar velocidad")
 
                         # Estadísticas de la simulación
-                        if resultados:                                                                      #Uso de la IA para mostrar estadisticas Lineas 62 - 75
-                            v_stal_list = [r[0] for r in resultados]
-                            v_actual_list = [r[1] for r in resultados]
-                            margen_list = [r[2] for r in resultados]
-                            print("\n--- Estadísticas de la simulación ---")
-                            print(f"Promedio velocidad de pérdida: {sum(v_stal_list)/len(v_stal_list):.2f}")
-                            print(f"Máxima velocidad de pérdida: {max(v_stal_list):.2f}")
-                            print(f"Mínima velocidad de pérdida: {min(v_stal_list):.2f}")
-                            print(f"Promedio velocidad actual: {sum(v_actual_list)/len(v_actual_list):.2f}")
-                            print(f"Máxima velocidad actual: {max(v_actual_list):.2f}")
-                            print(f"Mínima velocidad actual: {min(v_actual_list):.2f}")
-                            print(f"Promedio margen de seguridad: {sum(margen_list)/len(margen_list):.2f}")
-                            print(f"Máximo margen de seguridad: {max(margen_list):.2f}")
-                            print(f"Mínimo margen de seguridad: {min(margen_list):.2f}")
+                        if resultados:
+                            sum_v_stal = 0.0
+                            sum_v_actual = 0.0
+                            sum_margen = 0.0
+                            count = 0
+ 
+                        for r in resultados:
+                            #r == [v_stal, v_actual, margen]
+                            sum_v_stal += float(r[0])
+                            sum_v_actual += float(r[1])
+                            sum_margen += float(r[2])
+                            count += 1
+ 
+                        # calcular promedios
+                        promedio_v_stal = sum_v_stal / count
+                        promedio_v_actual = sum_v_actual / count
+                        promedio_margen = sum_margen / count
+ 
+                        print("\n--- Promedios de la simulación ---")
+                        print(f"Promedio velocidad de pérdida: {promedio_v_stal:.2f}")
+                        print(f"Promedio velocidad actual: {promedio_v_actual:.2f}")
+                        print(f"Promedio margen de seguridad: {promedio_margen:.2f}")
                     case "3":
                         print("Aeronaves disponibles")
                         for aeronave, datos in aeronaves.items():
@@ -89,6 +96,12 @@ while co == True:
                                 print(f"  {key}: {value}")
                             print()
                         print("Puede usar estos datos en la simulación seleccionando una aeronave.")
+                    case "4":
+                        print("Lista ejecutada")
+                        if resultados:
+                            print("Velocidad de perdida, velocidad actual, margen de seguridad")
+                        for r in resultados:
+                            print(f"| {r[0]:} | {r[1]} | {r[2]}")
                     case "0":
                         print("Regresando")
                         break
