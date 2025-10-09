@@ -65,7 +65,7 @@ while co == True:
                             else:
                                 print("Precaucion, velocidad de perdida, aumentar velocidad")
 
-                        # Estadísticas de la simulación
+                        # Estadísticas de la simulación                     uso de la IA aplicado en las operaciones estadisticas
                         if resultados:
                             sum_v_stal = 0.0
                             sum_v_actual = 0.0
@@ -73,7 +73,6 @@ while co == True:
                             count = 0
  
                         for r in resultados:
-                            #r == [v_stal, v_actual, margen]
                             sum_v_stal += float(r[0])
                             sum_v_actual += float(r[1])
                             sum_margen += float(r[2])
